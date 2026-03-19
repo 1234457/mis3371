@@ -1,0 +1,132 @@
+/*
+Program: style.css
+Author: Gavin Law
+Date created: 02/16/2026
+Date last edited: 02/25/2026
+Version: 1.3
+Description: Gavin Medical Group Patient Registration Form styling
+*/
+
+/* ================= BODY ================= */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    background-color: #f5f7fa;
+    color: #2e3a46;
+}
+
+/* ================= HEADER ================= */
+#header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 40px;
+    background-color: #e8eef5;
+    border-bottom: 1px solid #d6dee6;
+}
+
+.logo {
+    height: 70px;
+}
+
+#header h1 {
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-weight: 600;
+    color: #2b3f54;
+}
+
+#header p {
+    margin: 4px 0 0 0;
+    font-size: 0.95rem;
+    color: #4a5d6e;
+}
+
+#today {
+    font-weight: 500;
+    color: #5a6f82;
+}
+
+/* ================= MAIN FORM AREA ================= */
+#main {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+}
+
+/* ================= HEADINGS ================= */
+h2 {
+    font-family: Georgia, serif;
+    font-weight: 600;
+    color: #314a63;
+    border-bottom: 1px solid #e3e9ef;
+    padding-bottom: 6px;
+}
+
+/* ================= TABLE ================= */
+table {
+    width: 100%;
+    margin-bottom: 25px;
+    border-collapse: separate;
+    border-spacing: 10px 8px;
+}
+
+/* ================= INPUTS ================= */
+input, select, textarea {
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: 1px solid #ccd6e0;
+    font-size: 0.95rem;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: #7fa6c9;
+    box-shadow: 0 0 5px rgba(127,166,201,0.3);
+}
+
+/* ================= BUTTONS ================= */
+button {
+    padding: 9px 16px;
+    border-radius: 8px;
+    border: none;
+    background-color: #6c8fb3;
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+button:hover {
+    background-color: #5a7fa3;
+}
+
+/* ================= FOOTER ================= */
+#footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 40px;
+    background-color: #e8eef5;
+    border-top: 1px solid #d6dee6;
+    font-size: 0.9rem;
+    color: #445b70;
+}
+
+/* ================= LINKS ================= */
+a {
+    color: #5a7fa3;
+    text-decoration: none;
+}
+
+a:visited {
+    color: #4a6f93;
+}
+
+a:hover {
+    text-decoration: underline;
+}
