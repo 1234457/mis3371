@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Header</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background-color: #e8eef5;
+            color: #2b3f54;
+            overflow: hidden;
+        }
+
+        #header {
+            display: grid;
+            grid-template-columns: 100px 1fr 260px;
+            align-items: center;
+            padding: 12px 24px;
+            border-bottom: 1px solid #d6dee6;
+            box-sizing: border-box;
+        }
+
+        .header-left img {
+            height: 60px;
+        }
+
+        .header-center {
+            text-align: center;
+        }
+
+        .header-center h1 {
+            margin: 0;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 2.1rem;
+            font-weight: 600;
+        }
+
+        .header-center p {
+            margin: 4px 0 0 0;
+            font-size: 1rem;
+        }
+
+        .header-right {
+            text-align: right;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        #today {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="header">
+        <div class="header-left">
+            <img src="cliniclogo.png" alt="Gavin Medical Group logo">
+        </div>
+
+        <div class="header-center">
+            <h1>Gavin Medical Group</h1>
+            <p>Patient Registration Form</p>
+        </div>
+
+        <div class="header-right">
+            <p id="today">Today is:</p>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const todayEl = document.getElementById("today");
+    const d = new Date();
+
+    todayEl.textContent =
+        "Today is: " + d.toLocaleDateString(undefined, {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric"
+        });
+});
+</script>

@@ -1,0 +1,335 @@
+<!--
+Program name: homework4.html
+Author: Gavin Law
+Date created: 02/16/2026
+Date last edited: 04/07/2026
+Version: 4.0
+Description: Patient Registration Form with Fetch API, iframe, cookies, and local storage for Homework 4.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gavin Medical Group - Patient Registration</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+
+<!-- ================= IFRAME HEADER ================= -->
+<iframe src="header.html" id="headerFrame" title="Header"></iframe>
+
+<!-- ================= COOKIE / WELCOME AREA ================= -->
+<div id="welcomeMessage"></div>
+<div id="newUserArea"></div>
+
+<!-- ================= FORM ================= -->
+<div id="main">
+<form id="patientForm" action="thankyou.html" onsubmit="return validateForm()">
+
+<!-- ================= CREATE ACCOUNT ================= -->
+<h2>Create Account</h2>
+<table>
+<tr>
+    <td><label for="fname">First Name:</label></td>
+    <td>
+        <input type="text" id="fname" name="fname" maxlength="30" required
+               pattern="[A-Za-z'-]{1,30}"
+               title="Enter 1 to 30 characters. Letters, apostrophes, and dashes only."
+               oninput="validateFirstName()" onblur="validateFirstName()">
+        <br>
+        <span id="fnameError" class="error"></span>
+    </td>
+
+    <td><label for="mi">MI:</label></td>
+    <td>
+        <input type="text" id="mi" name="mi" maxlength="1"
+               pattern="[A-Za-z]?"
+               title="Enter one letter only, or leave blank."
+               oninput="validateMI()" onblur="validateMI()">
+        <br>
+        <span id="miError" class="error"></span>
+    </td>
+
+    <td><label for="lname">Last Name:</label></td>
+    <td>
+        <input type="text" id="lname" name="lname" maxlength="30" required
+               pattern="[A-Za-z'-]{1,30}"
+               title="Enter 1 to 30 characters. Letters, apostrophes, and dashes only."
+               oninput="validateLastName()" onblur="validateLastName()">
+        <br>
+        <span id="lnameError" class="error"></span>
+    </td>
+</tr>
+
+<tr>
+    <td>Patient's Sex:</td>
+    <td colspan="5">
+        <label><input type="radio" name="sex" value="Male" required onchange="validateSex()"> Male</label>
+        <label><input type="radio" name="sex" value="Female" onchange="validateSex()"> Female</label>
+        <label><input type="radio" name="sex" value="Other" onchange="validateSex()"> Other</label>
+        <br>
+        <span id="sexError" class="error"></span>
+    </td>
+</tr>
+
+<tr>
+    <td><label for="dob">Date of Birth:</label></td>
+    <td colspan="5">
+        <input type="date" id="dob" name="dob" required
+               title="Enter a valid birth date. No future dates and not more than 120 years ago."
+               oninput="validateDOB()" onblur="validateDOB()">
+        <br>
+        <span id="dobError" class="error"></span>
+    </td>
+</tr>
+
+<tr>
+    <td><label for="ssn">SSN / ID Number:</label></td>
+    <td colspan="5">
+        <input type="password" id="ssn" name="ssn" maxlength="11" required
+               pattern="\d{3}-\d{2}-\d{4}|\d{9}"
+               placeholder="XXX-XX-XXXX"
+               title="Enter a 9-digit ID or SSN in 123-45-6789 format."
+               oninput="formatSSN(this); validateSSN()" onblur="validateSSN()">
+        <br>
+        <span id="ssnError" class="error"></span>
+    </td>
+</tr>
+</table>
+
+<!-- ================= CONTACT INFO ================= -->
+<h2>Contact Information</h2>
+<table>
+<tr>
+    <td><label for="email">Email:</label></td>
+    <td colspan="5">
+        <input type="email" id="email" name="email" required
+               title="Enter a valid email address in the format name@domain.tld."
+               oninput="validateEmail(); this.value=this.value.toLowerCase()" onblur="validateEmail()">
+        <br>
+        <span id="emailError" class="error"></span>
+    </td>
+</tr>
+
+<tr>
+    <td><label for="phone">Phone:</label></td>
+    <td colspan="5">
+        <input type="text" id="phone" name="phone"
+               placeholder="123-456-7890"
+               pattern="\d{3}-\d{3}-\d{4}"
+               title="Enter phone number in 000-000-0000 format."
+               oninput="formatPhone(this); validatePhone()" onblur="validatePhone()">
+        <br>
+        <span id="phoneError" class="error"></span>
+    </td>
+</tr>
+</table>
+
+<!-- ================= ADDRESS ================= -->
+<h2>Address Information</h2>
+<table>
+<tr>
+    <td><label for="address1">Address 1:</label></td>
+    <td colspan="5">
+        <input type="text" id="address1" name="address1" minlength="2" maxlength="30" required
+               title="Enter 2 to 30 characters for Address Line 1."
+               oninput="validateAddress1()" onblur="validateAddress1()">
+        <br>
+        <span id="address1Error" class="error"></span>
+    </td>
+</tr>
+
+<tr>
+    <td><label for="address2">Address 2:</label></td>
+    <td colspan="5">
+        <input type="text" id="address2" name="address2" minlength="2" maxlength="30"
+               title="Optional. If entered, use 2 to 30 characters."
+               oninput="validateAddress2()" onblur="validateAddress2()">
+        <br>
+        <span id="address2Error" class="error"></span>
+    </td>
+</tr>
+
+<tr>
+    <td><label for="city">City:</label></td>
+    <td>
+        <input type="text" id="city" name="city" minlength="2" maxlength="30" required
+               pattern="[A-Za-z .'-]{2,30}"
+               title="Enter 2 to 30 characters for city name."
+               oninput="validateCity()" onblur="validateCity()">
+        <br>
+        <span id="cityError" class="error"></span>
+    </td>
+
+    <td><label for="state">State:</label></td>
+    <td>
+        <select id="state" name="state" required
+                title="Select a state code."
+                onchange="validateState()" onblur="validateState()">
+            <option value="">Select State</option>
+        </select>
+        <br>
+        <span id="stateError" class="error"></span>
+    </td>
+
+    <td><label for="zip">Zip:</label></td>
+    <td>
+        <input type="text" id="zip" name="zip" minlength="5" maxlength="10" required
+               pattern="\d{5}(-\d{4})?"
+               placeholder="12345 or 12345-6789"
+               title="Enter a 5-digit ZIP code or ZIP+4 format."
+               oninput="formatZip(this); validateZip()" onblur="validateZip()">
+        <br>
+        <span id="zipError" class="error"></span>
+    </td>
+</tr>
+</table>
+
+<!-- ================= PATIENT HISTORY ================= -->
+<h2>Patient History</h2>
+<table>
+<tr>
+    <td>Vaccinated?</td>
+    <td colspan="5">
+        <label><input type="radio" name="vaccine" value="Yes" required onchange="validateVaccine()"> Yes</label>
+        <label><input type="radio" name="vaccine" value="No" onchange="validateVaccine()"> No</label>
+        <br>
+        <span id="vaccineError" class="error"></span>
+    </td>
+</tr>
+
+<tr>
+    <td>Do you have insurance?</td>
+    <td colspan="5">
+        <label><input type="radio" name="insurance" value="Yes" required onchange="validateInsurance()"> Yes</label>
+        <label><input type="radio" name="insurance" value="No" onchange="validateInsurance()"> No</label>
+        <br>
+        <span id="insuranceError" class="error"></span>
+    </td>
+</tr>
+
+<tr>
+    <td>Check all that apply:</td>
+    <td colspan="5">
+        <label><input type="checkbox" name="history" value="Asthma" onchange="validateHistory()"> Asthma</label>
+        <label><input type="checkbox" name="history" value="Cancer" onchange="validateHistory()"> Cancer</label>
+        <label><input type="checkbox" name="history" value="Measles" onchange="validateHistory()"> Measles</label>
+        <label><input type="checkbox" name="history" value="COVID-19" onchange="validateHistory()"> COVID-19</label>
+        <label><input type="checkbox" name="history" value="Chicken Pox" onchange="validateHistory()"> Chicken Pox</label>
+        <label><input type="checkbox" name="history" value="Small Pox" onchange="validateHistory()"> Small Pox</label>
+        <label><input type="checkbox" name="history" value="Tetanus" onchange="validateHistory()"> Tetanus</label>
+        <br>
+        <span id="historyError" class="error"></span>
+    </td>
+</tr>
+
+<tr>
+    <td class="td1"><label for="symptoms">Describe symptoms:</label></td>
+    <td class="td2" colspan="5">
+        <textarea id="symptoms" name="symptoms" rows="3" cols="50" maxlength="500"
+            placeholder="Describe your symptoms here (optional)..."
+            title="Optional. Briefly describe symptoms."
+            oninput="validateSymptoms()" onblur="validateSymptoms()"></textarea>
+        <br>
+        <span id="symptomsError" class="error"></span>
+    </td>
+</tr>
+
+<tr>
+    <td class="td1"><label for="healthScale">Health scale (1–10):</label></td>
+    <td class="td2" colspan="5">
+        <input type="range" id="healthScale" name="healthScale" min="1" max="10" value="5"
+               oninput="hsValue.value=this.value; validateHealthScale()">
+        <output id="hsValue" name="hsValue">5</output>
+        <span class="hint">1 = bad, 10 = good</span>
+        <br>
+        <span id="healthScaleError" class="error"></span>
+    </td>
+</tr>
+</table>
+
+<!-- ================= PORTAL ACCOUNT ================= -->
+<h2>Create Portal Account</h2>
+<table>
+<tr>
+    <td><label for="userid">Username:</label></td>
+    <td>
+        <input type="text" id="userid" name="userid" maxlength="30" required
+               pattern="[A-Za-z][A-Za-z0-9_-]{4,29}"
+               title="5 to 30 characters. Must start with a letter. Letters, numbers, underscore, and dash only. No spaces."
+               onblur="this.value=this.value.toLowerCase(); validateUserId()"
+               oninput="this.value=this.value.toLowerCase(); validateUserId()">
+        <br>
+        <span id="useridError" class="error"></span>
+    </td>
+</tr>
+
+<tr>
+    <td><label for="password">Password:</label></td>
+    <td>
+        <input type="password" id="password" name="password" minlength="8" maxlength="30" required
+               pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,30}"
+               title="8 to 30 characters. Must include 1 uppercase, 1 lowercase, 1 number, and 1 special character. Do not use double quotes."
+               oninput="validatePassword(); checkPasswords()" onblur="validatePassword(); checkPasswords()">
+        <br>
+        <span id="passwordRuleError" class="error"></span>
+    </td>
+</tr>
+
+<tr>
+    <td><label for="confirmPassword">Confirm Password:</label></td>
+    <td>
+        <input type="password" id="confirmPassword" name="confirmPassword" minlength="8" maxlength="30" required
+               title="Re-enter the same password."
+               oninput="checkPasswords()" onblur="checkPasswords()">
+        <br>
+        <span id="passwordError" class="error"></span>
+    </td>
+</tr>
+
+<tr>
+    <td colspan="2">
+        <button type="reset" onclick="resetValidationMessages()">CLEAR AND START OVER</button>
+        <button type="button" onclick="reviewForm()">REVIEW</button>
+        <button type="button" onclick="validateAll()">VALIDATE</button>
+        <button type="submit" id="submitBtn" style="display:none;">SUBMIT</button>
+    </td>
+</tr>
+</table>
+
+</form>
+
+<!-- ================= REVIEW AREA ================= -->
+<div id="reviewArea">
+    <h2>Review Your Information</h2>
+    <p>Your entered information will appear here when you click the Review button.</p>
+</div>
+
+</div>
+
+<!-- ================= FOOTER ================= -->
+<div id="footer">
+    <div class="footer-left">
+        <strong>Gavin Medical Group</strong><br>
+        4750 Calhoun Rd<br>
+        Houston, TX 77004
+    </div>
+
+    <div class="footer-center">
+        <button type="button" onclick="alert('Contact us at info@gavinmedical.com');">
+            CONTACT US
+        </button>
+    </div>
+
+    <div class="footer-right">
+        <a href="https://www.facebook.com" target="_blank">Facebook</a> |
+        <a href="https://www.twitter.com" target="_blank">Twitter</a>
+    </div>
+</div>
+
+</body>
+</html>
